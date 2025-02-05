@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#5A5AD2", "font": {"color": "black"}, "id": "Malignant melanoma", "label": "Malignant melanoma", "shape": "dot", "size": 25, "title": "Malignant melanoma"}, {"color": "#FFFFFF", "font": {"color": "black"}, "id": "skin discoloration", "label": "skin discoloration", "shape": "dot", "size": 15, "title": "skin discoloration"}, {"color": "#FFFFFF", "font": {"color": "black"}, "id": "pain", "label": "pain", "shape": "dot", "size": 15, "title": "pain"}, {"color": "#FFFFFF", "font": {"color": "black"}, "id": "swelling", "label": "swelling", "shape": "dot", "size": 15, "title": "swelling"}, {"color": "#FFFFFF", "font": {"color": "black"}, "id": "fatigue", "label": "fatigue", "shape": "dot", "size": 15, "title": "fatigue"}, {"color": "#FFFFFF", "font": {"color": "black"}, "id": "weight loss", "label": "weight loss", "shape": "dot", "size": 15, "title": "weight loss"}, {"color": "#FFFFFF", "font": {"color": "black"}, "id": "loss of appetite", "label": "loss of appetite", "shape": "dot", "size": 15, "title": "loss of appetite"}, {"color": "#FFFFFF", "font": {"color": "black"}, "id": "and bleeding", "label": "and bleeding", "shape": "dot", "size": 15, "title": "and bleeding"}, {"color": "#90EE90", "font": {"color": "black"}, "id": "Increased age", "label": "Increased age", "shape": "dot", "size": 15, "title": "Increased age"}, {"color": "#90EE90", "font": {"color": "black"}, "id": "obesity", "label": "obesity", "shape": "dot", "size": 15, "title": "obesity"}, {"color": "#90EE90", "font": {"color": "black"}, "id": "hypertension", "label": "hypertension", "shape": "dot", "size": 15, "title": "hypertension"}, {"color": "#90EE90", "font": {"color": "black"}, "id": "and genetic predisposition", "label": "and genetic predisposition", "shape": "dot", "size": 15, "title": "and genetic predisposition"}, {"color": "#FFB347", "font": {"color": "black"}, "id": "Surgery", "label": "Surgery", "shape": "dot", "size": 15, "title": "Surgery"}, {"color": "#FFB347", "font": {"color": "black"}, "id": "chemotherapy", "label": "chemotherapy", "shape": "dot", "size": 15, "title": "chemotherapy"}, {"color": "#FFB347", "font": {"color": "black"}, "id": "immunotherapy", "label": "immunotherapy", "shape": "dot", "size": 15, "title": "immunotherapy"}, {"color": "#DDA0DD", "font": {"color": "black"}, "id": "Skin", "label": "Skin", "shape": "dot", "size": 15, "title": "Skin"}, {"color": "#5A5AD2", "font": {"color": "black"}, "id": "pathogenesis and progression of AD", "label": "pathogenesis and progression of AD", "shape": "dot", "size": 25, "title": "pathogenesis and progression of AD"}, {"color": "#FFB6C1", "font": {"color": "black"}, "id": "dementia", "label": "dementia", "shape": "dot", "size": 15, "title": "dementia"}, {"color": "#FFB6C1", "font": {"color": "black"}, "id": "memory loss", "label": "memory loss", "shape": "dot", "size": 15, "title": "memory loss"}, {"color": "#FFB6C1", "font": {"color": "black"}, "id": "cognitive decline", "label": "cognitive decline", "shape": "dot", "size": 15, "title": "cognitive decline"}, {"color": "#90EE90", "font": {"color": "black"}, "id": "value of aging", "label": "value of aging", "shape": "dot", "size": 15, "title": "value of aging"}, {"color": "#90EE90", "font": {"color": "black"}, "id": "increased oxidation of proteins and lipids", "label": "increased oxidation of proteins and lipids", "shape": "dot", "size": 15, "title": "increased oxidation of proteins and lipids"}, {"color": "#90EE90", "font": {"color": "black"}, "id": "decreased antioxidant defense", "label": "decreased antioxidant defense", "shape": "dot", "size": 15, "title": "decreased antioxidant defense"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_SYMPTOM", "to": "skin discoloration", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_SYMPTOM", "to": "pain", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_SYMPTOM", "to": "swelling", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_SYMPTOM", "to": "fatigue", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_SYMPTOM", "to": "weight loss", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_SYMPTOM", "to": "loss of appetite", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_SYMPTOM", "to": "and bleeding", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_RISK_FACTOR", "to": "Increased age", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_RISK_FACTOR", "to": "obesity", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_RISK_FACTOR", "to": "hypertension", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_RISK_FACTOR", "to": "and genetic predisposition", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_TREATMENT", "to": "Surgery", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_TREATMENT", "to": "chemotherapy", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "HAS_TREATMENT", "to": "immunotherapy", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "Malignant melanoma", "label": "", "title": "AFFECTS_BODY_PART", "to": "Skin", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "pathogenesis and progression of AD", "label": "", "title": "HAS_SYMPTOM", "to": "dementia", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "pathogenesis and progression of AD", "label": "", "title": "HAS_SYMPTOM", "to": "memory loss", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "pathogenesis and progression of AD", "label": "", "title": "HAS_SYMPTOM", "to": "cognitive decline", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "pathogenesis and progression of AD", "label": "", "title": "HAS_RISK_FACTOR", "to": "value of aging", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "pathogenesis and progression of AD", "label": "", "title": "HAS_RISK_FACTOR", "to": "increased oxidation of proteins and lipids", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "pathogenesis and progression of AD", "label": "", "title": "HAS_RISK_FACTOR", "to": "decreased antioxidant defense", "width": 0.5}, {"arrows": "to", "color": "#000000", "from": "pathogenesis and progression of AD", "label": "", "title": "AFFECTS_BODY_PART", "to": "Skin", "width": 0.5}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"enabled": true, "forceAtlas2Based": {"gravitationalConstant": -50, "centralGravity": 0.01, "springLength": 100, "springConstant": 0.08, "damping": 0.4, "avoidOverlap": 0.5}, "solver": "forceAtlas2Based", "stabilization": {"enabled": true, "iterations": 1000}}, "edges": {"smooth": {"type": "continuous"}, "font": {"size": 0, "strokeWidth": 0}}, "interaction": {"hover": true, "hideEdgesOnDrag": false, "navigationButtons": false, "keyboard": false, "zoomView": true}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
